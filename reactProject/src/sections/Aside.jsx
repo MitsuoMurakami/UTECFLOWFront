@@ -1,4 +1,8 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { BiHomeAlt2 } from "react-icons/bi";
+import { FaQuestion, FaTags } from "react-icons/fa6";
+import { FaRegComment } from "react-icons/fa";
+import { CiLogout } from "react-icons/ci";
 
 const Aside = () => {
   const location = useLocation();
@@ -17,7 +21,8 @@ const Aside = () => {
                 : "font-bold text-gray-700"
             }`}
           >
-            Home
+            <BiHomeAlt2 />
+            Inicio
           </NavLink>
           <NavLink
             to="/dashboard/question"
@@ -27,16 +32,19 @@ const Aside = () => {
                 : "font-bold text-gray-700"
             }`}
           >
+        <FaRegComment />
           Preguntas
           </NavLink>
           <NavLink
             to="/dashboard/doubts"
             className={`flex items-center gap-3 p-1 ${
-              location.pathname.includes("doubts")
+                location.pathname.includes("doubts")
                 ? "font-bold text-cach-l2"
                 : "font-bold text-gray-700"
             }`}
           >
+
+            <FaQuestion />
             Mis dudas
           </NavLink>
           <NavLink
@@ -47,12 +55,14 @@ const Aside = () => {
                 : "font-bold text-gray-700"
             }`}
           >
+            <FaTags />
             Tags
           </NavLink>
           <NavLink
             to="/dashboard/logout"
             className="flex items-center gap-3 p-1 font-bold text-gray-700"
           >
+            <CiLogout />
             Cerrar sesión
           </NavLink>
         </div>
