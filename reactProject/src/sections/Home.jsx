@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react';
 import Post from '../components/Post';
 
 
-
 const PostList = ({ posts }) => {
   return (
 

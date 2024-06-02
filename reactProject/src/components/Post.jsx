@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { Box, Heading, Text, IconButton, Flex, Input, Button } from '@chakra-ui/react';
-import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart, AiOutlineComment } from 'react-icons/ai';
 
 const Post = ({ post }) => {
   const [commentCount, setCommentCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [liked, setLiked] = useState(false);
 
   const handleToggleCommentForm = () => {
     setShowCommentForm(prev => !prev); // Alternar la visibilidad del formulario de comentarios
     setCommentText(''); // Limpiar el campo de texto al alternar la visibilidad
+  };
+
+  const handleLikeClick = () => {
+    setLiked(!liked); // Alternar el estado de "Me gusta"
   };
 
   const handleSubmitComment = () => {
@@ -29,9 +34,10 @@ const Post = ({ post }) => {
         <Flex alignItems="center">
           <IconButton
             aria-label="Me gusta"
-            icon={<AiOutlineHeart />}
+            icon={liked ? <AiFillHeart /> : <AiOutlineHeart />}
             variant="outline"
-            colorScheme="blue"
+            colorScheme={liked ? "red" : "blue"}
+            onClick={handleLikeClick}
           />
         </Flex>
         <Flex alignItems="center">
