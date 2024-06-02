@@ -1,15 +1,30 @@
-import {Box} from '@chakra-ui/react'
-import './App.css'
+import { Routes, Route, useLocation } from "react-router-dom";
+import router from "./routes/root.jsx";
+import HomePage from "./pages/HomePage.jsx";
 
-function App() {
+const App = () => {
+
+  const location = useLocation();
+
+  const showMainPage = location.pathname.includes("dashboard");
 
   return (
-    <div className="App">
-      <Box>
-        Hola Mundo!
-      </Box>
-    </div>
-  )
-}
+    <div id="App" className="h-full w-full">
+      {!showMainPage || <HomePage />}
 
-export default App
+      {showMainPage || (
+        <Routes>
+          {router.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={route.element}
+            ></Route>
+          ))}
+        </Routes>
+      )}
+    </div>
+  );
+};
+
+export default App;
