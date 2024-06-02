@@ -27,7 +27,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding="4" marginBottom="4">
+    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding="4" marginBottom="4" background={"#ece9e9"}>
       <Heading size="md" marginBottom="2">{post.title}</Heading>
       <Text marginBottom="4">{post.content}</Text>
       <Flex justifyContent="space-between" alignItems="center">
