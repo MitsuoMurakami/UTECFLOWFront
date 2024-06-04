@@ -6,7 +6,7 @@ const App = () => {
 
   const location = useLocation();
 
-  const showMainPage = location.pathname.includes("dashboard");
+  const showMainPage = location.pathname.includes("/");
 
   return (
     <div id="App" className="h-full w-full">
