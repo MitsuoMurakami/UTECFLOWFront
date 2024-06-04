@@ -25,7 +25,7 @@ const Aside = () => {
             Inicio
           </NavLink>
           <NavLink
-            to="/dashboard/question"
+            to="/dashboard/questions"
             className={`flex items-center gap-3 p-1 ${
               location.pathname.includes("question")
                 ? "font-bold text-cach-l2"
