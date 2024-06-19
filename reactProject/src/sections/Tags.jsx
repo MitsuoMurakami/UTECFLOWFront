@@ -1,8 +1,21 @@
 import React from "react";
 import Tag from "../components/Tag"; 
-import { getTags } from "../constants/tags"; 
+import { TagsContext } from "../contexts/TagsContext";
+
 const Tags = () => {
-    const tagsArray = Object.values(getTags); // Convertir el objeto en un array
+    const { tags, loading, error } = React.useContext(TagsContext);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>Error: {error.message}</p>;
+    }
+
+    if (!tags || tags.length === 0) {
+        return <p>No tags available.</p>;
+    }
 
     return (
         <div className="p-6">
@@ -11,7 +24,7 @@ const Tags = () => {
                 Un tag es una etiqueta que se le asigna a un contenido para clasificarlo y organizarlo.
             </p>
             <div className="flex flex-wrap">
-                {tagsArray.map(tag => (
+                {tags.map(tag => (
                     <Tag key={tag.id} item={tag} />
                 ))}
             </div>

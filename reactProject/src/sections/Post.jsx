@@ -1,1 +1,1 @@
-
+// esta vista es para cuando se de click en un post y se muestre la informacion del post

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import router from './routes/root.jsx';
 import HomePage from './pages/HomePage.jsx';
 import { PostsProvider } from './contexts/PostsContext';
+import { TagsProvider } from './contexts/TagsContext';
 
 const App = () => {
   const location = useLocation();
@@ -10,6 +11,8 @@ const App = () => {
   const showMainPage = location.pathname.includes('/');
 
   return (
+
+    <TagsProvider>
     <PostsProvider>
       <div id="App" className="h-full w-full">
         {showMainPage ? <HomePage /> : (
@@ -25,6 +28,7 @@ const App = () => {
         )}
       </div>
     </PostsProvider>
+    </TagsProvider>
   );
 };
 

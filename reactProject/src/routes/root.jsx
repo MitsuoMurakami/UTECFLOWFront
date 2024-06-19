@@ -1,4 +1,4 @@
-import Question from '../sections/Question';
+import Question from '../sections/DoQuestion';
 import Home from '../sections/Home';
 import Doubts from '../sections/Doubts';
 import Tags from '../sections/Tags';
