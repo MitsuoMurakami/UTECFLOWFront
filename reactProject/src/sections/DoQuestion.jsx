@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Bs1CircleFill, Bs2CircleFill } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom';
 
 const QuestionForm = () => {
   const [question, setQuestion] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState(['CS', '5to ciclo', 'Software']);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const navigate = useNavigate();
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
@@ -26,12 +29,18 @@ const QuestionForm = () => {
   };
 
   const handleCancel = () => {
-    // Función para cancelar la pregunta
+    navigate('/dashboard/questions');
   };
 
   const handleSend = () => {
-    // Función para enviar la pregunta
+    if (question.trim() === '') {
+      setAttemptedSubmit(true);
+    } else {
+      navigate('/dashboard/doubts');
+    }
   };
+
+  const isSendDisabled = question.trim() === '';
 
   return (
     <div className="flex flex-col flex-grow justify-center items-center bg-gray-100 h-full">
@@ -43,9 +52,10 @@ const QuestionForm = () => {
         <textarea
           value={question}
           onChange={handleQuestionChange}
-          className="w-full h-16 md:h-20 border border-gray-300 bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none resize-none mb-4"
+          className={`w-full h-16 md:h-20 border ${attemptedSubmit && isSendDisabled ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none resize-none mb-4`}
           placeholder="¿Qué temas recomiendan aprender antes de llevar Ingeniería de Software?"
         ></textarea>
+        {attemptedSubmit && isSendDisabled && <p className="text-red-500 mb-4">Por favor, ingrese contenido en su pregunta.</p>}
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Bs2CircleFill className="text-cach-l2 text-2xl" />
@@ -80,7 +90,12 @@ const QuestionForm = () => {
         </div>
         <div className="flex justify-end gap-4 mb-4">
           <button onClick={handleCancel} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Cancelar</button>
-          <button onClick={handleSend} className="bg-cach-l2 text-white px-4 py-2 rounded-md">Enviar</button>
+          <button
+            onClick={handleSend}
+            className={`px-4 py-2 rounded-md text-white ${isSendDisabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-cach-l2'}`}
+          >
+            Enviar
+          </button>
         </div>
       </div>
     </div>
