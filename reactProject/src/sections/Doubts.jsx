@@ -5,7 +5,7 @@ import Post from '../components/Post';
 
 import PropTypes from 'prop-types';
 
-const Doubts = ({ posts }) => {
+const Doubts = () => {
 	return (
 		<Box height="100vh" className="App">
 			<Box>
@@ -15,10 +15,6 @@ const Doubts = ({ posts }) => {
 			</Box>
 		</Box>
 	);
-};
-
-Doubts.propTypes = {
-	posts: PropTypes.array.isRequired,
 };
 
 

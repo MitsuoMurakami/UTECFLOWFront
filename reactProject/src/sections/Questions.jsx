@@ -1,33 +1,26 @@
-import React from 'react';
-import { Box, Button, VStack } from '@chakra-ui/react';
+// src/sections/Questions.jsx
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Post from '../components/Post';
+import { PostsContext } from '../contexts/PostsContext';
 
-const PostList = ({ posts }) => {
+const Questions = () => {
+  const { posts, loading, error } = useContext(PostsContext);
   const navigate = useNavigate();
 
-  const handleCreatePost = () => {
-    navigate('/dashboard/question');
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <Box height="100vh" className="App">
-      <VStack spacing={4} align="start" margin={4}>
-        <Button
-          colorScheme="blue"
-          size="lg"
-          onClick={handleCreatePost}
-        >
-          Hacer publicación
-        </Button>
-        <Box width="100%">
-          {posts.map(post => (
-            <Post key={post.id} post={post} />
-          ))}
-        </Box>
-      </VStack>
-    </Box>
+    <div>
+      <h1>hola</h1>
+      {posts.map(post => (
+        <div key={post.id}>
+          <h2>{post.titulo}</h2>
+          <p>{post.texto}</p>
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default PostList;
+export default Questions;

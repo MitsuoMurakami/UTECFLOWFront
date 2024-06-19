@@ -4,12 +4,6 @@ import Doubts from '../sections/Doubts';
 import Tags from '../sections/Tags';
 import Questions from '../sections/Questions';
 
-const posts = [
-	{ id: 1, title: 'Primera Publicación', content: 'Este es el contenido de la primera publicación.' },
-	{ id: 2, title: 'Segunda Publicación', content: 'Este es el contenido de la segunda publicación.' }
-  ];
-
-
 const router = [
     {
         path: '/dashboard/question',
@@ -21,7 +15,7 @@ const router = [
     },
     {
         path: '/dashboard/doubts',
-        element: <Doubts posts={posts} />,
+        element: <Doubts />,
     },
 
     {
@@ -31,7 +25,7 @@ const router = [
 
     {
         path: '/dashboard/questions',
-        element: <Questions posts={posts} />,
+        element: <Questions />,
     }
 ];
 
