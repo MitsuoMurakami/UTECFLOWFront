@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
 import { Bs1CircleFill, Bs2CircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const QuestionForm = () => {
   const [question, setQuestion] = useState('');
+  const [title, setTitle] = useState('');
+  const [course, setCourse] = useState('');
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState(['CS', '5to ciclo', 'Software']);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Estados de validación
+  const [isTitleValid, setIsTitleValid] = useState(true);
+  const [isQuestionValid, setIsQuestionValid] = useState(true);
+  const [isCourseValid, setIsCourseValid] = useState(true);
+
   const navigate = useNavigate();
 
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
+    setIsQuestionValid(event.target.value.trim() !== '');
+  };
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+    setIsTitleValid(event.target.value.trim() !== '');
+  };
+
+  const handleCourseChange = (event) => {
+    setCourse(event.target.value);
+    setIsCourseValid(event.target.value.trim() !== '');
   };
 
   const handleTagInputChange = (event) => {
@@ -32,15 +53,42 @@ const QuestionForm = () => {
     navigate('/dashboard/questions');
   };
 
-  const handleSend = () => {
-    if (question.trim() === '') {
+  const handleSend = async () => {
+    if (question.trim() === '' || title.trim() === '' || course.trim() === '') {
       setAttemptedSubmit(true);
-    } else {
-      navigate('/dashboard/doubts');
+      setIsTitleValid(title.trim() !== '');
+      setIsQuestionValid(question.trim() !== '');
+      setIsCourseValid(course.trim() !== '');
+      return;
+    }
+
+    const data = {
+      texto: question,
+      archivo: "None",
+      titulo: title,
+      usuario_gmail: "yared.riveros@utec.edu.pe",
+      curso: course,
+      respondido: false,
+      tags: tags,
+    };
+
+    try {
+      const response = await axios.post(
+        'https://4cko1or492.execute-api.us-east-1.amazonaws.com/test/preguntas/crearPregunta',
+        data
+      );
+      console.log('Response:', response)
+      if (response.status === 200) {
+        alert('Pregunta enviada con éxito');
+        navigate('/dashboard/doubts');
+      }
+    } catch (error) {
+      console.error('Error al enviar la pregunta:', error);
+      setErrorMessage('Error al enviar la pregunta. Intente nuevamente más tarde.');
     }
   };
 
-  const isSendDisabled = question.trim() === '';
+  const isSendDisabled = question.trim() === '' || title.trim() === '' || course.trim() === '';
 
   return (
     <div className="flex flex-col flex-grow justify-center items-center bg-gray-100 h-full">
@@ -49,13 +97,28 @@ const QuestionForm = () => {
           <Bs1CircleFill className="text-cach-l2 text-2xl" />
           <h3 className="text-lg font-medium">Haz una pregunta</h3>
         </div>
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          className={`w-full mb-4 border ${attemptedSubmit && !isTitleValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none`}
+          placeholder="Título de la pregunta"
+        />
         <textarea
           value={question}
           onChange={handleQuestionChange}
-          className={`w-full h-16 md:h-20 border ${attemptedSubmit && isSendDisabled ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none resize-none mb-4`}
+          className={`w-full h-16 md:h-20 border ${attemptedSubmit && !isQuestionValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none resize-none mb-4`}
           placeholder="¿Qué temas recomiendan aprender antes de llevar Ingeniería de Software?"
         ></textarea>
-        {attemptedSubmit && isSendDisabled && <p className="text-red-500 mb-4">Por favor, ingrese contenido en su pregunta.</p>}
+        <input
+          type="text"
+          value={course}
+          onChange={handleCourseChange}
+          className={`w-full mb-4 border ${attemptedSubmit && !isCourseValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none`}
+          placeholder="Curso relacionado"
+        />
+        {attemptedSubmit && isSendDisabled && <p className="text-red-500 mb-4">Por favor, complete todos los campos.</p>}
+        {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Bs2CircleFill className="text-cach-l2 text-2xl" />
