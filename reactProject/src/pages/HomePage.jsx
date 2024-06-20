@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import Aside from "../sections/Aside";
 import router from "../routes/root";
 import { IoIosSearch } from "react-icons/io";
@@ -18,9 +18,18 @@ const HomePage = () => {
                 className="pl-10 flex-1 h-8 px-4 rounded-md border border-cach-l2 focus:outline-none"
               />
             </div>
-            <button className="bg-cach-l2 text-white px-4 py-1 rounded-md">
-              Buscar
-            </button>
+          </div>
+          <div className="flex items-center gap-4 ml-4">
+            <Link to="/login">
+              <button className="bg-cach-l2 text-white px-4 py-1 rounded-md">
+                Login
+              </button>
+            </Link>
+            <Link to="/register">
+              <button className="bg-cach-l2 text-white px-4 py-1 rounded-md">
+                Register
+              </button>
+            </Link>
           </div>
         </div>
         <Routes>
