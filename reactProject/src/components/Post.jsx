@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Heading, Text, IconButton, Flex, Input, Button } from '@chakra-ui/react';
+import { Box, Heading, Text, IconButton, Flex, Input, Button, Tag, TagLabel } from '@chakra-ui/react';
 import { AiOutlineHeart, AiFillHeart, AiOutlineComment } from 'react-icons/ai';
 
 const Post = ({ post }) => {
@@ -10,19 +10,19 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(false);
 
   const handleToggleCommentForm = () => {
-    setShowCommentForm(prev => !prev); // Alternar la visibilidad del formulario de comentarios
-    setCommentText(''); // Limpiar el campo de texto al alternar la visibilidad
+    setShowCommentForm(prev => !prev);
+    setCommentText('');
   };
 
   const handleLikeClick = () => {
-    setLiked(!liked); // Alternar el estado de "Me gusta"
+    setLiked(!liked);
   };
 
   const handleSubmitComment = () => {
     if (commentText.trim() !== '') {
       setComments(prevComments => [...prevComments, commentText]);
-      setCommentCount(prevCount => prevCount + 1); // Incrementar el contador de comentarios
-      setCommentText(''); // Limpiar el campo de texto después de enviar el comentario
+      setCommentCount(prevCount => prevCount + 1);
+      setCommentText('');
     }
   };
 
@@ -30,7 +30,17 @@ const Post = ({ post }) => {
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding="4" marginBottom="4" background={"#ece9e9"}>
       <Heading size="md" marginBottom="2">{post.titulo}</Heading>
       <Text marginBottom="4">{post.texto}</Text>
-      <Flex justifyContent="space-between" alignItems="center">
+      
+      {/* Mostrar las etiquetas */}
+      <Flex flexWrap="wrap">
+        {post.tags && post.tags.map((tag, index) => (
+          <Tag key={index} size="md" variant="subtle" colorScheme="blue" marginRight="2" marginBottom="2">
+            <TagLabel>{tag}</TagLabel>
+          </Tag>
+        ))}
+      </Flex>
+      
+      <Flex justifyContent="space-between" alignItems="center" marginTop="4">
         <Flex alignItems="center">
           <IconButton
             aria-label="Me gusta"
@@ -39,6 +49,7 @@ const Post = ({ post }) => {
             colorScheme={liked ? "red" : "blue"}
             onClick={handleLikeClick}
           />
+          <Text marginLeft="2">{post.likes}</Text> {/* Mostrar el número de likes */}
         </Flex>
         <Flex alignItems="center">
           <IconButton
@@ -51,6 +62,7 @@ const Post = ({ post }) => {
           <Text marginLeft="2">{commentCount}</Text>
         </Flex>
       </Flex>
+      
       {showCommentForm && (
         <Box marginTop="4">
           <Input
@@ -63,6 +75,7 @@ const Post = ({ post }) => {
           </Button>
         </Box>
       )}
+      
       <Box marginTop="4">
         {comments.map((comment, index) => (
           <Box key={index} borderWidth="1px" borderRadius="md" padding="2" marginTop="2">

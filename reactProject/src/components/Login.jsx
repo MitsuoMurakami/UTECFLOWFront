@@ -20,7 +20,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/api/login', { username, password });
+      const response = await axios.post('https://4cko1or492.execute-api.us-east-1.amazonaws.com/test/preguntas/leerPreguntas', { username, password });
       toast({
         title: response.data.message,
         status: 'success',

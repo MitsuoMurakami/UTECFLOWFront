@@ -11,6 +11,7 @@ const QuestionForm = () => {
   const [tags, setTags] = useState(['CS', '5to ciclo', 'Software']);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [file, setFile] = useState(null); // Estado para el archivo seleccionado
 
   // Estados de validación
   const [isTitleValid, setIsTitleValid] = useState(true);
@@ -62,9 +63,17 @@ const QuestionForm = () => {
       return;
     }
 
+    if (file && file.size > 1024 * 1024) { // 1MB = 1024 * 1024 bytes
+      alert('El archivo seleccionado excede el tamaño máximo permitido (1MB).');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file); // Agregar el archivo al FormData
+
     const data = {
       texto: question,
-      archivo: "None",
+      archivo: file ? file.name : "None",
       titulo: title,
       usuario_gmail: "yared.riveros@utec.edu.pe",
       curso: course,
@@ -77,7 +86,21 @@ const QuestionForm = () => {
         'https://4cko1or492.execute-api.us-east-1.amazonaws.com/test/preguntas/crearPregunta',
         data
       );
-      console.log('Response:', response)
+
+      if (file) {
+        const fileResponse = await axios.post(
+          'URL_PARA_SUBIR_ARCHIVOS', 
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        );
+        console.log('File upload response:', fileResponse);
+      }
+
+      console.log('Question send response:', response)
       if (response.status === 200) {
         alert('Pregunta enviada con éxito');
         navigate('/dashboard/doubts');
@@ -104,12 +127,14 @@ const QuestionForm = () => {
           className={`w-full mb-4 border ${attemptedSubmit && !isTitleValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none`}
           placeholder="Título de la pregunta"
         />
+        {attemptedSubmit && !isTitleValid && <p className="text-red-500 text-sm mb-2">Por favor, ingrese un título válido.</p>}
         <textarea
           value={question}
           onChange={handleQuestionChange}
           className={`w-full h-16 md:h-20 border ${attemptedSubmit && !isQuestionValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none resize-none mb-4`}
           placeholder="¿Qué temas recomiendan aprender antes de llevar Ingeniería de Software?"
         ></textarea>
+        {attemptedSubmit && !isQuestionValid && <p className="text-red-500 text-sm mb-2">Por favor, ingrese una pregunta válida.</p>}
         <input
           type="text"
           value={course}
@@ -117,8 +142,20 @@ const QuestionForm = () => {
           className={`w-full mb-4 border ${attemptedSubmit && !isCourseValid ? 'border-red-500' : 'border-gray-300'} bg-cach-l1 rounded-md p-2 md:p-4 focus:outline-none`}
           placeholder="Curso relacionado"
         />
-        {attemptedSubmit && isSendDisabled && <p className="text-red-500 mb-4">Por favor, complete todos los campos.</p>}
-        {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+        {attemptedSubmit && !isCourseValid && <p className="text-red-500 text-sm mb-2">Por favor, ingrese un curso válido.</p>}
+        {attemptedSubmit && isSendDisabled && <p className="text-red-500 text-sm mb-4">Por favor, complete todos los campos.</p>}
+        {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
+        {/* Campo para subir archivo */}
+        <div className="mb-4">
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="border border-gray-300 bg-cach-l1 rounded-md p-2 focus:outline-none"
+          />
+          {file && file.size > 1024 * 1024 && (
+            <p className="text-red-500 text-sm mt-1">El archivo seleccionado excede el tamaño máximo permitido (1MB).</p>
+          )}
+        </div>
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Bs2CircleFill className="text-cach-l2 text-2xl" />
