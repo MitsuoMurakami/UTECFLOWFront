@@ -3,6 +3,7 @@ import { Bs1CircleFill, Bs2CircleFill } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 const QuestionForm = () => {
   const [question, setQuestion] = useState('');
   const [title, setTitle] = useState('');
@@ -115,7 +116,7 @@ const QuestionForm = () => {
 
   return (
     <div className="flex flex-col flex-grow justify-center items-center bg-gray-100 h-full">
-      <div className="bg-white p-4 md:p-8 rounded-lg shadow-lg w-full max-w-5xl h-full">
+      <div className="bg-white p-4 md:p-8 rounded-lg w-full max-w-5xl h-full">
         <div className="flex items-center gap-2 mb-4">
           <Bs1CircleFill className="text-cach-l2 text-2xl" />
           <h3 className="text-lg font-medium">Haz una pregunta</h3>
