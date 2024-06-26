@@ -8,6 +8,7 @@ export const SearchProvider = ({ children }) => {
     const [searchTerm, setSearchTerm] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
+    const [boolBusqueda, setBoolBusqueda] = React.useState(false);
 
     React.useEffect(() => {
         if (searchTerm) {
@@ -19,6 +20,7 @@ export const SearchProvider = ({ children }) => {
                 console.log(response.data);
                 setSearchResults(response.data.body);
                 setLoading(false);
+                setBoolBusqueda(true);
             })
             .catch(error => {
                 setError(error);
@@ -28,7 +30,7 @@ export const SearchProvider = ({ children }) => {
     }, [searchTerm]);
 
     return (
-        <SearchContext.Provider value={{ searchResults, setSearchTerm, loading, error }}>
+        <SearchContext.Provider value={{ searchResults, setSearchTerm, loading, error , boolBusqueda}}>
             {children}
         </SearchContext.Provider>
     );

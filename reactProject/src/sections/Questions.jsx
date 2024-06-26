@@ -7,7 +7,7 @@ import Post from '../components/Post';
 
 const Questions = () => {
   const { posts, loading: postsLoading, error: postsError } = useContext(PostsContext);
-  const { searchResults, loading: searchLoading, error: searchError } = useContext(SearchContext);
+  const { searchResults, loading: searchLoading, error: searchError , boolBusqueda} = useContext(SearchContext);
   const navigate = useNavigate();
 
   const handleCreatePost = () => {
@@ -16,7 +16,8 @@ const Questions = () => {
 
   const loading = postsLoading || searchLoading;
   const error = postsError || searchError;
-  const resultsToShow = searchResults.length > 0 ? searchResults : posts;
+
+  const resultsToShow = boolBusqueda ? searchResults : posts;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
