@@ -1,9 +1,20 @@
 import { Route, Routes, Link } from "react-router-dom";
+import { useEffect, useContext } from "react";
 import Aside from "../sections/Aside";
 import router from "../routes/root";
 import { IoIosSearch } from "react-icons/io";
-
+import { SearchContext } from "../contexts/SearchContext";
+import Questions from '../sections/Questions';
 const HomePage = () => {
+  const { setSearchTerm } = useContext(SearchContext);
+
+  const handleKeyUp = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setSearchTerm(event.target.value);
+    }
+  };
+
   return (
     <main className="flex">
       <Aside />
@@ -16,6 +27,8 @@ const HomePage = () => {
                 type="text"
                 placeholder="Buscar..."
                 className="pl-10 flex-1 h-8 px-4 rounded-md border border-cach-l2 focus:outline-none"
+                name="search" id="search-id"
+                onKeyUp={handleKeyUp}
               />
             </div>
           </div>
@@ -40,6 +53,7 @@ const HomePage = () => {
               element={route.element}
             />
           ))}
+          <Route path="/questions" element={<Questions />} />
         </Routes>
       </section>
     </main>

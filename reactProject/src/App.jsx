@@ -4,6 +4,7 @@ import router from './routes/root.jsx';
 import HomePage from './pages/HomePage.jsx';
 import { PostsProvider } from './contexts/PostsContext';
 import { TagsProvider } from './contexts/TagsContext';
+import { SearchProvider } from './contexts/SearchContext';
 
 const App = () => {
   const location = useLocation();
@@ -12,8 +13,10 @@ const App = () => {
 
   return (
 
+    <SearchProvider>
     <TagsProvider>
     <PostsProvider>
+
       <div id="App" className="h-full w-full">
         {showMainPage ? <HomePage /> : (
           <Routes>
@@ -29,6 +32,7 @@ const App = () => {
       </div>
     </PostsProvider>
     </TagsProvider>
+    </SearchProvider>
   );
 };
 
